@@ -1,4 +1,5 @@
 # SigmaNet Auth client
+Python client for Django to interact with SigmaNet auth server.
 
 ## Installation
 
