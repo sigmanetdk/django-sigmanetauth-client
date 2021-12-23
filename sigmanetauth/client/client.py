@@ -3,8 +3,8 @@ import json
 import requests
 from django.conf import settings
 
-from client.factory.models import Token, UserInfo
-from client.middleware.oauth import get_oauth_state_token
+from client import Token, UserInfo
+from sigmanetauth.client.middleware.oauth import get_oauth_state_token
 
 
 class Singleton(type):
