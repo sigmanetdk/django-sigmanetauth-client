@@ -33,7 +33,7 @@ class SigmaNetOAuthClient(metaclass=Singleton):
                f'&response_type={response_type}'
 
     def get_token(self, request, grant_type='authorization_code'):
-        response = requests.post(f'{settings.SIGMANET_AUTH_BASE_URL}/oauth/token/', data={
+        response = requests.post(f'{settings.SIGMANET_AUTH_BASE_URL}/oauth2/token/', data={
             'authorization_code': request.GET.get('authorization_code', None),
             'grant_type': grant_type,
             'client_id': settings.SIGMANET_AUTH_CLIENT_ID,
@@ -44,7 +44,7 @@ class SigmaNetOAuthClient(metaclass=Singleton):
         return response, Token.from_response(self._decode(response))
 
     def get_userinfo(self, token):
-        response = requests.get('https://auth.sigmanet.dk/oauth/userinfo/', headers={
+        response = requests.get(f'{settings.SIGMANET_AUTH_BASE_URL}/oauth2/userinfo/', headers={
             'Authorization': f'Bearer {token}'
         })
         if response.status_code >= 300:
