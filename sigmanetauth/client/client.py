@@ -3,7 +3,7 @@ import json
 import requests
 from django.conf import settings
 
-from client import Token, UserInfo
+from sigmanetauth.client.factory.models import Token, UserInfo
 from sigmanetauth.client.middleware.oauth import get_oauth_state_token
 
 
