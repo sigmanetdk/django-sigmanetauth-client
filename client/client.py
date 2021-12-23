@@ -1,6 +1,9 @@
+import json
+
 import requests
 from django.conf import settings
 
+from client.factory.models import Token, UserInfo
 from client.middleware.oauth import get_oauth_state_token
 
 
@@ -37,17 +40,22 @@ class SigmaNetOAuthClient(metaclass=Singleton):
             'client_secret': settings.SIGMANET_AUTH_CLIENT_SECRET
         })
         if response.status_code >= 300:
-            raise PermissionError(response)
-        return response
+            return response, None
+        return response, Token.from_response(self._decode(response))
 
     def get_userinfo(self, token):
         response = requests.get('https://auth.sigmanet.dk/oauth/userinfo/', headers={
             'Authorization': f'Bearer {token}'
         })
-        return response
+        if response.status_code >= 300:
+            return response, None
+        return response, UserInfo.from_response(self._decode(response))
 
     def _ensure_oauth_state_token(self, request):
         if request.session.get('_oauth_state_token', None) is None:
             raise ValueError('The session did not contain any _oauth_state_token which is required '
                              'for the request to be processed. Ensure that SIGMANET_CLIENT_LOGIN_PATH is set '
                              'correctly and OAuthValidateStateMiddleware middleware is placed in settings.MIDDLEWARE')
+
+    def _decode(self, response):
+        return json.loads(response.content.decode('utf8'))

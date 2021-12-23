@@ -1,0 +1,2 @@
+client
+django_sigmanetauth_client
