@@ -8,6 +8,7 @@ class UserInfo:
     email: str
     username: str
     phone_number: str
+    language: str
     id: str
     is_staff: bool
     is_active: bool
@@ -22,6 +23,7 @@ class UserInfo:
             email=response['email'],
             username=response['username'],
             phone_number=response['phone_number'],
+            language=response['language'],
             id=response['id'],
             is_staff=response['is_staff'],
             is_active=response['is_active'],
